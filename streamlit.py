@@ -53,7 +53,7 @@ def main():
 
         # Allow 2 dropdowns side by side
         dropdown_columns = st.columns(2)
-        dropdown_columns2 = st.columns(2)
+        table_columns = st.columns(2)
 
         # Select Betting Staff
         with dropdown_columns[0]:
@@ -116,7 +116,8 @@ def main():
                 else:
                     filtered_df = filter_dataframe_by_column_value(df, 'Date', dates)
                 
-                st.write("List of selected staff and dates.", filtered_df)
+                with table_columns[0]:
+                    st.write("List of Selected Staff and Dates.", filtered_df)
 
                 # Convert the 'Date' column to datetime with month and year only
                 filtered_df['Date'] = pd.to_datetime(filtered_df['Date'], format='%d/%m/%Y').dt.to_period('M')
@@ -131,7 +132,13 @@ def main():
                 st.title('Month-to-month PnL (Units)')
 
                 # Melt the DataFrame to long format for Altair
-                melted = pd.melt(grouped, id_vars='Date', var_name='Name', value_name='Units W/L')
+                melted = pd.melt(grouped, id_vars='Date', var_name='Name', value_name='Units W/L (Monthly)')
+
+                # Calculate the sum of 'Units W/L' for each 'Name'
+                name_total = melted.groupby('Name')['Units W/L (Monthly)'].sum().reset_index()
+
+                with table_columns[1]:
+                    st.write("Total W/L in Units Over Selected Period", name_total)
 
                 # Convert 'Date' back to datetime format from period
                 melted['Date'] = melted['Date'].dt.to_timestamp()
@@ -139,7 +146,7 @@ def main():
                 # Create an Altair chart
                 line = alt.Chart(melted).mark_line().encode(
                     x='Date:T',
-                    y='Units W/L:Q',
+                    y='Units W/L (Monthly):Q',
                     color='Name:N'
                 ).properties(
                     width=800,
@@ -149,7 +156,7 @@ def main():
                 # Create an Altair chart
                 circles = alt.Chart(melted).mark_circle().encode(
                     x='Date:T',
-                    y='Units W/L:Q',
+                    y='Units W/L (Monthly):Q',
                     color='Name:N'
                 ).properties(
                     width=800,
