@@ -122,6 +122,9 @@ def main():
                 # Convert the 'Date' column to datetime with month and year only
                 filtered_df['Date'] = pd.to_datetime(filtered_df['Date'], format='%d/%m/%Y').dt.to_period('M')
 
+                name_count = filtered_df.groupby('Name')['Units Won/Lost'].count().reset_index()
+                name_count.columns = ['Name', 'Total Bets']
+
                 # Group by 'Date' and 'Name', summing 'Profit_Loss'
                 grouped = filtered_df.groupby(['Date', 'Name'])['Units Won/Lost'].sum().unstack(fill_value=0)
                 
@@ -136,9 +139,12 @@ def main():
 
                 # Calculate the sum of 'Units W/L' for each 'Name'
                 name_total = melted.groupby('Name')['Units W/L (Monthly)'].sum().reset_index()
+                name_total.columns = ["Name", "Units W/L"]
+
+                name_summary = pd.merge(name_total, name_count, on='Name')
 
                 with table_columns[1]:
-                    st.write("Total W/L in Units Over Selected Period", name_total)
+                    st.write("Summary Over Selected Period", name_summary)
 
                 # Convert 'Date' back to datetime format from period
                 melted['Date'] = melted['Date'].dt.to_timestamp()
