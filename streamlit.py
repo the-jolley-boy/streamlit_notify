@@ -2,7 +2,6 @@ import streamlit as st
 from urllib.error import URLError
 import pandas as pd
 import altair as alt
-import gspread
 from datetime import datetime
 
 sheets_to_fetch = ['mike%20recap', 'caleb%20recap', 'eddy%20recap', 'sheeto%20recap', 'cryp%20esports', 'george', 'bag%20of%20coal%20recap', 'colyer%20recap']
