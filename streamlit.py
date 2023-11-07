@@ -15,8 +15,8 @@ def get_UN_data(indices, truncate_index):
 
     for sheet_name, name in zip(selected_sheets, selected_names):
         # Read the data while skipping rows that contain the misnamed cells
-        spreadsheet = pd.read_csv(f'https://docs.google.com/spreadsheets/d/1Iy1J2ayUw_MeiDa6hm6Kk3xuySSdTrgIMeluc72rNE0/gviz/tq?tqx=out:csv&sheet={sheet_name}')
-        #spreadsheet = pd.read_csv(f'https://docs.google.com/spreadsheets/d/1wv863UY3bD0MWWetQp-_DOTDwsFePRx_RB2c9Uc101U/gviz/tq?tqx=out:csv&sheet={sheet_name}')
+        # spreadsheet = pd.read_csv(f'https://docs.google.com/spreadsheets/d/1Iy1J2ayUw_MeiDa6hm6Kk3xuySSdTrgIMeluc72rNE0/gviz/tq?tqx=out:csv&sheet={sheet_name}')
+        spreadsheet = pd.read_csv(f'https://docs.google.com/spreadsheets/d/1wv863UY3bD0MWWetQp-_DOTDwsFePRx_RB2c9Uc101U/gviz/tq?tqx=out:csv&sheet={sheet_name}')
 
         # Add person's name to the beginning of the DataFrame
         spreadsheet.insert(0, 'Name', name)
