@@ -4,19 +4,21 @@ import pandas as pd
 import altair as alt
 from datetime import datetime
 
-sheets_to_fetch = ['mike%20recap', 'caleb%20recap', 'eddy%20recap', 'sheeto%20recap', 'cryp%20esports', 'george', 'bag%20of%20coal%20recap', 'colyer%20recap']
-names_to_fetch = ['Mike', 'Caleb', 'Eddy', 'Sheeto', 'Cryp Esports', 'George', 'Bag of Coal', 'Colyer']
+sheets_to_fetch = ['mike%20recap', 'caleb%20recap', 'eddy%20recap', 'sheeto%20recap', 'cryp%20esports', 'george', 'bag%20of%20coal%20recap', 'colyer%20recap', 'yuyigo80%20recap']
+names_to_fetch = ['Mike', 'Caleb', 'Eddy', 'Sheeto', 'Cryp Esports', 'George', 'Bag of Coal', 'Colyer', 'Yuyigo80']
 
 def get_UN_data(indices, truncate_index):
+    # Define column names
+    column_names = ['Name', 'Date', 'Play', 'Odds', 'Units Risked', 'Result', 'Units Won/Lost']
+
     combined_df = pd.DataFrame()
 
     selected_sheets = [sheets_to_fetch[idx] for idx in indices]
     selected_names = [names_to_fetch[idx] for idx in indices]
 
     for sheet_name, name in zip(selected_sheets, selected_names):
-        # Read the data while skipping rows that contain the misnamed cells
-        # spreadsheet = pd.read_csv(f'https://docs.google.com/spreadsheets/d/1Iy1J2ayUw_MeiDa6hm6Kk3xuySSdTrgIMeluc72rNE0/gviz/tq?tqx=out:csv&sheet={sheet_name}')
-        spreadsheet = pd.read_csv(f'https://docs.google.com/spreadsheets/d/1wv863UY3bD0MWWetQp-_DOTDwsFePRx_RB2c9Uc101U/gviz/tq?tqx=out:csv&sheet={sheet_name}')
+        # Read the data while skipping rows that contain the misnamed cells 
+        spreadsheet = pd.read_csv(f'https://docs.google.com/spreadsheets/d/1wv863UY3bD0MWWetQp-_DOTDwsFePRx_RB2c9Uc101U/gviz/tq?tqx=out:csv&sheet={sheet_name}', header=None, skiprows=1)
 
         # Add person's name to the beginning of the DataFrame
         spreadsheet.insert(0, 'Name', name)
@@ -24,7 +26,10 @@ def get_UN_data(indices, truncate_index):
         # Truncate each row after the specified column index
         spreadsheet = spreadsheet.iloc[:, :truncate_index + 1]  # +2 to keep the columns up to the desired index
 
-        # Append modified spreadsheet to the combined DataFrame
+        # Assign column names
+        spreadsheet.columns = column_names
+
+        # Append modified spreadsheet to the combined DataFrame 
         combined_df = pd.concat([combined_df, spreadsheet], ignore_index=True)
 
     return combined_df
