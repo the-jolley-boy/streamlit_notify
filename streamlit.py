@@ -4,8 +4,8 @@ import pandas as pd
 import altair as alt
 from datetime import datetime
 
-sheets_to_fetch = ['mike%20recap', 'caleb%20recap', 'eddy%20recap', 'sheeto%20recap', 'cryp%20esports', 'george', 'bag%20of%20coal%20recap', 'colyer%20recap', 'yuyigo80%20recap']
-names_to_fetch = ['Mike', 'Caleb', 'Eddy', 'Sheeto', 'Cryp Esports', 'George', 'Bag of Coal', 'Colyer', 'Yuyigo80']
+sheets_to_fetch = ['caleb%20recap', 'yous%20recap', 'serbian%20recap', 'cryp%20esports']
+names_to_fetch = ['Caleb', 'Yous', 'Serbian', 'Cryp Esports']
 
 def get_UN_data(indices, truncate_index):
     # Define column names
@@ -18,7 +18,7 @@ def get_UN_data(indices, truncate_index):
 
     for sheet_name, name in zip(selected_sheets, selected_names):
         # Read the data while skipping rows that contain the misnamed cells 
-        spreadsheet = pd.read_csv(f'https://docs.google.com/spreadsheets/d/1wv863UY3bD0MWWetQp-_DOTDwsFePRx_RB2c9Uc101U/gviz/tq?tqx=out:csv&sheet={sheet_name}', header=None, skiprows=1)
+        spreadsheet = pd.read_csv(f'https://docs.google.com/spreadsheets/d/12sCC92_qOCOTEGDsst_elS7gT4I1ko2CmPBqg9Y6NEU/gviz/tq?tqx=out:csv&sheet={sheet_name}', header=None, skiprows=1)
 
         # Add person's name to the beginning of the DataFrame
         spreadsheet.insert(0, 'Name', name)
