@@ -29,6 +29,12 @@ def get_UN_data(indices, truncate_index):
         # Assign column names
         spreadsheet.columns = column_names
 
+        # Remove 'u' character from 'Units Won/Lost' column
+        spreadsheet['Units Won/Lost'] = spreadsheet['Units Won/Lost'].astype(str).str.replace('u', '')
+
+        # Convert 'Units Won/Lost' column to numeric
+        spreadsheet['Units Won/Lost'] = pd.to_numeric(spreadsheet['Units Won/Lost'], errors='coerce')
+
         # Append modified spreadsheet to the combined DataFrame 
         combined_df = pd.concat([combined_df, spreadsheet], ignore_index=True)
 
